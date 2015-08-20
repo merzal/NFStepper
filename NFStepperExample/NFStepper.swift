@@ -9,8 +9,14 @@
 import Foundation
 import UIKit
 
-class NFStepper : UIControl
-{
+enum ValueChangeAnimationStyle {
+    case FadeInOut
+    case Horizontal
+    case Vertical
+}
+
+class NFStepper : UIControl {
+    
     // MARK: -
     // MARK: Properties
     
@@ -22,6 +28,11 @@ class NFStepper : UIControl
             else if(value < minValue) {
                 self.value = minValue
             }
+            else
+            {
+                self.animateValueChange(oldValue, newValue: value)
+            }
+            
             valueLabel.text = String(format: "%g", value)
         }
     }
@@ -29,15 +40,13 @@ class NFStepper : UIControl
     var maxValue : Double = 10.0
     var minValue : Double = 0.0
     var stepSize : Double = 1.0
+    var animationStyle : ValueChangeAnimationStyle = ValueChangeAnimationStyle.Vertical
     
+    private var labelContainerView : UIView = UIView(frame: CGRectZero)
     private var valueLabel : UILabel = UILabel(frame: CGRectZero)
     private var increaseButton : UIButton = UIButton(frame: CGRectZero)
     private var decreaseButton : UIButton = UIButton(frame: CGRectZero)
     
-    enum ValueChangeAnimationStyle {
-        case ValueChangeAnimationStyleHorizontal
-        case ValueChangeAnimationStyleVertical
-    }
     
     // MARK: -
     // MARK: Initializers
@@ -65,9 +74,24 @@ class NFStepper : UIControl
     // MARK: Value Label Methods
     
     private func setupAndAddValueLabel() {
+        self.setupLabelContainerView()
         self.setupValueLabel()
-        self.addSubview(valueLabel)
-        self.setupValueLabelConstraints()
+    }
+    
+    private func setupLabelContainerView() {
+        labelContainerView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        labelContainerView.clipsToBounds = true
+        self.addSubview(labelContainerView)
+        self.setupLabelContainerViewConstraints()
+    }
+    
+    private func setupLabelContainerViewConstraints() {
+        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[labelContainerView]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView])
+        
+        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[labelContainerView]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView])
+        
+        self.addConstraints(horizontal)
+        self.addConstraints(vertical)
     }
     
     private func setupValueLabel() {
@@ -76,15 +100,19 @@ class NFStepper : UIControl
         valueLabel.textColor = UIColor.darkGrayColor()
         valueLabel.font = UIFont.boldSystemFontOfSize(20.0)
         valueLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        self.labelContainerView.addSubview(valueLabel)
+        
+        self.setupValueLabelConstraints()
     }
     
     private func setupValueLabelConstraints() {
-        var horizontalValueLabelConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[valueLabel]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["valueLabel" : valueLabel])
+        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[valueLabel]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["valueLabel" : valueLabel])
         
-        var verticalValueLabelConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[valueLabel]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["valueLabel" : valueLabel])
+        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|[valueLabel]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["valueLabel" : valueLabel])
         
-        self.addConstraints(horizontalValueLabelConstraints)
-        self.addConstraints(verticalValueLabelConstraints)
+        self.addConstraints(horizontal)
+        self.addConstraints(vertical)
     }
     
     // MARK: -
@@ -113,15 +141,15 @@ class NFStepper : UIControl
     }
     
     private func setupButtonConstraints() {
-        var horizontalButtonConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[valueLabel]-[increaseButton][decreaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["valueLabel" : valueLabel, "increaseButton" : increaseButton, "decreaseButton" : decreaseButton])
+        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[increaseButton][decreaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView, "increaseButton" : increaseButton, "decreaseButton" : decreaseButton])
         
-        var verticalIncreaseButtonConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[increaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["increaseButton" : increaseButton])
+        var verticalIncrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[increaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["increaseButton" : increaseButton])
         
-        var verticalDecreaseButtonConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[decreaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["decreaseButton" : decreaseButton])
+        var verticalDecrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[decreaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["decreaseButton" : decreaseButton])
         
-        self.addConstraints(horizontalButtonConstraints)
-        self.addConstraints(verticalIncreaseButtonConstraints)
-        self.addConstraints(verticalDecreaseButtonConstraints)
+        self.addConstraints(horizontal)
+        self.addConstraints(verticalIncrease)
+        self.addConstraints(verticalDecrease)
     }
     
     @objc private func increaseValue(sender : UIButton) {
@@ -130,5 +158,63 @@ class NFStepper : UIControl
     
     @objc private func decreaseValue(sender : UIButton) {
         value -= stepSize
+    }
+    
+    // MARK: -
+    // MARK: Animation
+    
+    private func animateValueChange(oldValue : Double, newValue : Double) {
+        switch animationStyle {
+        case .FadeInOut:
+            self.fadeInOutAnimation()
+        case .Horizontal:
+            self.horizontalAnimation(oldValue, newValue: newValue)
+        case  .Vertical:
+            self.verticalAnimation(oldValue, newValue: newValue)
+        default:
+            self.fadeInOutAnimation()
+        }
+    }
+    
+    private func fadeInOutAnimation() {
+        self.valueLabel.alpha = 0.0
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            self.valueLabel.alpha = 1.0
+            }, completion: nil)
+    }
+    
+    private func horizontalAnimation(oldValue : Double, newValue : Double) {
+        var isIncreased : Bool = self.isValueIncreased(oldValue, newValue: newValue)
+        
+        isIncreased ? (self.valueLabel.frame.origin.x += CGRectGetWidth(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.x -= CGRectGetWidth(self.labelContainerView.frame))
+        
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            isIncreased ? (self.valueLabel.frame.origin.x -= CGRectGetWidth(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.x += CGRectGetWidth(self.labelContainerView.frame))
+            }, completion: nil)
+    }
+    
+    private func verticalAnimation(oldValue : Double, newValue : Double) {
+        var isIncreased : Bool = self.isValueIncreased(oldValue, newValue: newValue)
+        
+        isIncreased ? (self.valueLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame))
+        
+        
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            isIncreased ? (self.valueLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame))
+            }, completion: nil)
+    }
+    
+    // MARK: -
+    // MARK: Helper methods
+    
+    private func isValueIncreased(oldValue : Double, newValue : Double) -> Bool {
+        var retVal : Bool = false
+        if(newValue > oldValue) {
+            retVal = true
+        }
+        else {
+            retVal = false
+        }
+        return retVal
     }
 }
