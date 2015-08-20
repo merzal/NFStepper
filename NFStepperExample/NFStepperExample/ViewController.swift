@@ -86,6 +86,7 @@ class ViewController: UIViewController {
         
         animationSegment.setTranslatesAutoresizingMaskIntoConstraints(false)
         animationSegment.selectedSegmentIndex = 0
+        animationSegment.addTarget(self, action: "selectionIndexChanged:", forControlEvents: UIControlEvents.ValueChanged)
         self.view.addSubview(animationSegment)
         
         var styleLabel : UILabel = UILabel(frame: CGRectZero)
@@ -96,6 +97,7 @@ class ViewController: UIViewController {
         
         styleSegment.setTranslatesAutoresizingMaskIntoConstraints(false)
         styleSegment.selectedSegmentIndex = 0
+        styleSegment.addTarget(self, action: "selectionIndexChanged:", forControlEvents: UIControlEvents.ValueChanged)
         self.view.addSubview(styleSegment)
         
         var themeLabel : UILabel = UILabel(frame: CGRectZero)
@@ -106,6 +108,7 @@ class ViewController: UIViewController {
         
         themeSegment.setTranslatesAutoresizingMaskIntoConstraints(false)
         themeSegment.selectedSegmentIndex = 0
+        themeSegment.addTarget(self, action: "selectionIndexChanged:", forControlEvents: UIControlEvents.ValueChanged)
         self.view.addSubview(themeSegment)
         
         var horizontalAL = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[animationLabel]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["animationLabel" : animationLabel])
@@ -130,6 +133,29 @@ class ViewController: UIViewController {
         self.view.addConstraints(horizontalTS)
 
         self.view.addConstraints(vertical)
+    }
+    
+    func selectionIndexChanged(sender : UISegmentedControl) {
+        if(sender.isEqual(animationSegment)) {
+            switch sender.selectedSegmentIndex {
+            case 0:
+                stepper.animationStyle = ValueChangeAnimationStyle.None
+            case 1:
+                stepper.animationStyle = ValueChangeAnimationStyle.Vertical
+            case 2:
+                stepper.animationStyle = ValueChangeAnimationStyle.Horizontal
+            case 3:
+                stepper.animationStyle = ValueChangeAnimationStyle.FadeInOut
+            default:
+                break
+            }
+        }
+        else if(sender.isEqual(styleSegment)) {
+            
+        }
+        else if(sender.isEqual(themeSegment)) {
+            
+        }
     }
     
     // MARK: -
