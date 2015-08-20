@@ -82,6 +82,7 @@ class NFStepper : UIControl {
     private var increaseButton : UIButton = UIButton(frame: CGRectZero)
     private var decreaseButton : UIButton = UIButton(frame: CGRectZero)
     
+    private let blueHighlight : UIColor = UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)
     
     // MARK: -
     // MARK: Initializers
@@ -100,7 +101,8 @@ class NFStepper : UIControl {
     // MARK: Setup Methods
     
     private func setupStepper() {
-        self.backgroundColor = UIColor.darkGrayColor()
+        self.layer.borderColor = blueHighlight.CGColor
+        self.layer.borderWidth = 1.0
         self.setupAndAddValueLabel()
         self.setupAndAddButtons()
     }
@@ -130,10 +132,10 @@ class NFStepper : UIControl {
     }
     
     private func setupValueLabel() {
-        valueLabel.backgroundColor = UIColor.lightGrayColor()
+        valueLabel.backgroundColor = UIColor.whiteColor()
         valueLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         valueLabel.text = String(format: "%g", value)
-        valueLabel.textColor = UIColor.darkGrayColor()
+        valueLabel.textColor = UIColor.darkTextColor()
         valueLabel.font = UIFont.boldSystemFontOfSize(20.0)
         valueLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         
@@ -164,20 +166,26 @@ class NFStepper : UIControl {
     
     private func setupIncreaseButton() {
         increaseButton.setTitle("+", forState: UIControlState.Normal)
-        increaseButton.backgroundColor = UIColor.greenColor()
+        increaseButton.backgroundColor = UIColor.whiteColor()
+        increaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
+        increaseButton.layer.borderWidth = 1.0
+        increaseButton.layer.borderColor = blueHighlight.CGColor
         increaseButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         increaseButton.addTarget(self, action: "increaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     private func setupDecreaseButton() {
         decreaseButton.setTitle("-", forState: UIControlState.Normal)
-        decreaseButton.backgroundColor = UIColor.redColor()
+        decreaseButton.backgroundColor = UIColor.whiteColor()
+        decreaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
+        decreaseButton.layer.borderWidth = 1.0
+        decreaseButton.layer.borderColor = blueHighlight.CGColor
         decreaseButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         decreaseButton.addTarget(self, action: "decreaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     private func setupButtonConstraints() {
-        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[increaseButton][decreaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView, "increaseButton" : increaseButton, "decreaseButton" : decreaseButton])
+        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[decreaseButton][increaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView, "increaseButton" : increaseButton, "decreaseButton" : decreaseButton])
         
         var verticalIncrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[increaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["increaseButton" : increaseButton])
         

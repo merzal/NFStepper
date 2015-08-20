@@ -67,7 +67,7 @@ class ViewController: UIViewController {
     func setupStepperConstraints() {
         var horizontalStepperConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[stepper]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["stepper" : stepper])
         
-        var verticalStepperConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[titleLabel]-[stepper(40)]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["titleLabel" : titleLabel, "stepper" : stepper])
+        var verticalStepperConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[titleLabel]-[stepper(60)]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["titleLabel" : titleLabel, "stepper" : stepper])
         
         self.view.addConstraints(horizontalStepperConstraints)
         self.view.addConstraints(verticalStepperConstraints)
@@ -151,10 +151,24 @@ class ViewController: UIViewController {
             }
         }
         else if(sender.isEqual(styleSegment)) {
-            
+            switch sender.selectedSegmentIndex {
+            case 0:
+                stepper.style = StepperStyle.Flat
+            case 1:
+                stepper.style = StepperStyle.Rounded
+            default:
+                break
+            }
         }
         else if(sender.isEqual(themeSegment)) {
-            
+            switch sender.selectedSegmentIndex {
+            case 0:
+                stepper.theme = StepperTheme.Light
+            case 1:
+                stepper.theme = StepperTheme.Dark
+            default:
+                break
+            }
         }
     }
     
