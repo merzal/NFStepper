@@ -12,6 +12,9 @@ class ViewController: UIViewController {
     
     var titleLabel : UILabel = UILabel(frame: CGRectZero)
     var stepper : NFStepper = NFStepper(frame: CGRectZero)
+    var styleSegment : UISegmentedControl = UISegmentedControl(items: ["Flat", "Round"])
+    var themeSegment : UISegmentedControl = UISegmentedControl(items: ["Light", "Dark"])
+    var animationSegment : UISegmentedControl = UISegmentedControl(items: ["None", "Vertical", "Horizontal", "FadeInOut"])
     
     // MARK: -
     // MARK: View Lifecycle Methods
@@ -22,6 +25,7 @@ class ViewController: UIViewController {
         
         self.setupAndAddTitleLabel()
         self.setupAndAddNFStepper()
+        self.setupSegmentedControls()
     }
     
     // MARK: -
@@ -70,6 +74,65 @@ class ViewController: UIViewController {
     }
     
     // MARK: -
+    // MARK: Segmented Control Methods
+    
+    func setupSegmentedControls() {
+        
+        var animationLabel : UILabel = UILabel(frame: CGRectZero)
+        animationLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        animationLabel.textAlignment = NSTextAlignment.Center
+        animationLabel.text = "Animation"
+        self.view.addSubview(animationLabel)
+        
+        animationSegment.setTranslatesAutoresizingMaskIntoConstraints(false)
+        animationSegment.selectedSegmentIndex = 0
+        self.view.addSubview(animationSegment)
+        
+        var styleLabel : UILabel = UILabel(frame: CGRectZero)
+        styleLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        styleLabel.textAlignment = NSTextAlignment.Center
+        styleLabel.text = "Style"
+        self.view.addSubview(styleLabel)
+        
+        styleSegment.setTranslatesAutoresizingMaskIntoConstraints(false)
+        styleSegment.selectedSegmentIndex = 0
+        self.view.addSubview(styleSegment)
+        
+        var themeLabel : UILabel = UILabel(frame: CGRectZero)
+        themeLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        themeLabel.textAlignment = NSTextAlignment.Center
+        themeLabel.text = "Theme"
+        self.view.addSubview(themeLabel)
+        
+        themeSegment.setTranslatesAutoresizingMaskIntoConstraints(false)
+        themeSegment.selectedSegmentIndex = 0
+        self.view.addSubview(themeSegment)
+        
+        var horizontalAL = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[animationLabel]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["animationLabel" : animationLabel])
+        
+        var horizontalAS = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[animationSegment]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["animationSegment" : animationSegment])
+        
+        var horizontalSL = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[styleSegment]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["styleSegment" : styleSegment])
+        
+        var horizontalSS = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[styleLabel]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["styleLabel" : styleLabel])
+        
+        var horizontalTL = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[themeLabel]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["themeLabel" : themeLabel])
+        
+        var horizontalTS = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[themeSegment]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["themeSegment" : themeSegment])
+        
+        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:[stepper]-50-[animationLabel]-[animationSegment]-[styleLabel]-[styleSegment]-[themeLabel]-[themeSegment]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["animationLabel" : animationLabel, "stepper" : stepper, "animationSegment" : animationSegment, "styleLabel" : styleLabel, "styleSegment" : styleSegment, "themeLabel" : themeLabel, "themeSegment" : themeSegment])
+        
+        self.view.addConstraints(horizontalAL)
+        self.view.addConstraints(horizontalAS)
+        self.view.addConstraints(horizontalSL)
+        self.view.addConstraints(horizontalSS)
+        self.view.addConstraints(horizontalTL)
+        self.view.addConstraints(horizontalTS)
+
+        self.view.addConstraints(vertical)
+    }
+    
+    // MARK: -
     // MARK: Memory Management Methods
     
     override func didReceiveMemoryWarning() {
@@ -77,4 +140,3 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 }
-

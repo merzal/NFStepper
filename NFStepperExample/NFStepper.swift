@@ -21,6 +21,11 @@ enum StepperStyle {
     case Rounded
 }
 
+enum StepperTheme {
+    case Light
+    case Dark
+}
+
 class NFStepper : UIControl {
     
     // MARK: -
@@ -57,6 +62,18 @@ class NFStepper : UIControl {
     var valueFont : UIFont = UIFont.systemFontOfSize(12.0) {
         didSet {
             valueLabel.font = valueFont
+        }
+    }
+    
+    var theme : StepperTheme = StepperTheme.Light {
+        didSet {
+            self.changeTheme()
+        }
+    }
+    
+    var style : StepperStyle = StepperStyle.Flat {
+        didSet {
+            self.changeStyle()
         }
     }
     
@@ -114,6 +131,7 @@ class NFStepper : UIControl {
     
     private func setupValueLabel() {
         valueLabel.backgroundColor = UIColor.lightGrayColor()
+        valueLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         valueLabel.text = String(format: "%g", value)
         valueLabel.textColor = UIColor.darkGrayColor()
         valueLabel.font = UIFont.boldSystemFontOfSize(20.0)
@@ -226,13 +244,46 @@ class NFStepper : UIControl {
     // MARK: Helper methods
     
     private func isValueIncreased(oldValue : Double, newValue : Double) -> Bool {
-        var retVal : Bool = false
-        if(newValue > oldValue) {
-            retVal = true
+        return (newValue > oldValue) ? true : false
+    }
+    
+    // MARK: -
+    // MARK: Themes
+    
+    private func changeTheme() {
+        switch theme {
+        case .Dark:
+            self.changeToDarkTheme()
+        case .Light:
+            self.changeToLightTheme()
         }
-        else {
-            retVal = false
+    }
+    
+    private func changeToDarkTheme() {
+        
+    }
+    
+    private func changeToLightTheme() {
+        
+    }
+    
+    // MARK: -
+    // MARK: Styles
+    
+    private func changeStyle() {
+        switch style {
+        case .Flat:
+            self.changeToFlatStyle()
+        case .Rounded:
+            self.changeToRoundedStyle()
         }
-        return retVal
+    }
+    
+    private func changeToFlatStyle() {
+        
+    }
+    
+    private func changeToRoundedStyle() {
+        
     }
 }
