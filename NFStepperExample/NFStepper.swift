@@ -10,9 +10,15 @@ import Foundation
 import UIKit
 
 enum ValueChangeAnimationStyle {
+    case None
     case FadeInOut
     case Horizontal
     case Vertical
+}
+
+enum StepperStyle {
+    case Flat
+    case Rounded
 }
 
 class NFStepper : UIControl {
@@ -26,7 +32,7 @@ class NFStepper : UIControl {
                 value = maxValue
             }
             else if(value < minValue) {
-                self.value = minValue
+                value = minValue
             }
             else
             {
@@ -41,6 +47,18 @@ class NFStepper : UIControl {
     var minValue : Double = 0.0
     var stepSize : Double = 1.0
     var animationStyle : ValueChangeAnimationStyle = ValueChangeAnimationStyle.Vertical
+    
+    var valueTextColor : UIColor = UIColor.darkTextColor() {
+        didSet {
+            valueLabel.textColor = valueTextColor
+        }
+    }
+    
+    var valueFont : UIFont = UIFont.systemFontOfSize(12.0) {
+        didSet {
+            valueLabel.font = valueFont
+        }
+    }
     
     private var labelContainerView : UIView = UIView(frame: CGRectZero)
     private var valueLabel : UILabel = UILabel(frame: CGRectZero)
@@ -172,7 +190,7 @@ class NFStepper : UIControl {
         case  .Vertical:
             self.verticalAnimation(oldValue, newValue: newValue)
         default:
-            self.fadeInOutAnimation()
+            break
         }
     }
     

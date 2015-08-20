@@ -55,7 +55,7 @@ class ViewController: UIViewController {
     
     func setupAndAddNFStepper() {
         stepper.setTranslatesAutoresizingMaskIntoConstraints(false)
-        stepper.animationStyle = ValueChangeAnimationStyle.Vertical
+        stepper.animationStyle = ValueChangeAnimationStyle.None
         self.view.addSubview(stepper)
         self.setupStepperConstraints()
     }
