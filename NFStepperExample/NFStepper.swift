@@ -85,6 +85,8 @@ class NFStepper : UIControl {
     private var buttonSeparator : UIView = UIView(frame: CGRectZero)
     
     private let blueHighlight : UIColor = UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)
+    private let darkTextColor : UIColor = UIColor(red: 0.835, green: 0.835, blue: 0.835, alpha: 1.0)
+    private let darkThemeColor : UIColor = UIColor(red: 0.157, green: 0.157, blue: 0.157, alpha: 1.0)
     
     // MARK: -
     // MARK: Initializers
@@ -105,6 +107,7 @@ class NFStepper : UIControl {
     private func setupStepper() {
         self.layer.borderColor = blueHighlight.CGColor
         self.layer.borderWidth = 1.0
+        self.layer.cornerRadius = 1.0
         self.setupAndAddValueLabel()
         self.setupAndAddButtons()
     }
@@ -163,14 +166,13 @@ class NFStepper : UIControl {
         self.setupIncreaseButton()
         self.setupButtonSeparator()
         self.setupDecreaseButton()
-        self.setupIncreaseButton()
-        self.setupDecreaseButton()
         self.setupButtonConstraints()
     }
     
     private func setupButtonContainer() {
         buttonContainer.setTranslatesAutoresizingMaskIntoConstraints(false)
         buttonContainer.clipsToBounds = true
+        buttonContainer.layer.cornerRadius = 1.0
         buttonContainer.layer.borderWidth = 1.0
         buttonContainer.layer.borderColor = blueHighlight.CGColor
         self.addSubview(buttonContainer)
@@ -195,6 +197,7 @@ class NFStepper : UIControl {
     private func setupIncreaseButton() {
         increaseButton.setTitle("+", forState: UIControlState.Normal)
         increaseButton.backgroundColor = UIColor.whiteColor()
+        increaseButton.titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
         increaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
         increaseButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         increaseButton.addTarget(self, action: "increaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -204,6 +207,7 @@ class NFStepper : UIControl {
     private func setupDecreaseButton() {
         decreaseButton.setTitle("-", forState: UIControlState.Normal)
         decreaseButton.backgroundColor = UIColor.whiteColor()
+        decreaseButton.titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
         decreaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
         decreaseButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         decreaseButton.addTarget(self, action: "decreaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -297,11 +301,19 @@ class NFStepper : UIControl {
     }
     
     private func changeToDarkTheme() {
-        
+        self.backgroundColor = darkThemeColor
+        valueLabel.textColor = darkTextColor
+        valueLabel.backgroundColor = darkThemeColor
+        increaseButton.backgroundColor = darkThemeColor
+        decreaseButton.backgroundColor = darkThemeColor
     }
     
     private func changeToLightTheme() {
-        
+        self.backgroundColor = UIColor.whiteColor()
+        valueLabel.textColor = UIColor.darkTextColor()
+        valueLabel.backgroundColor = UIColor.whiteColor()
+        increaseButton.backgroundColor = UIColor.whiteColor()
+        decreaseButton.backgroundColor = UIColor.whiteColor()
     }
     
     // MARK: -
@@ -317,10 +329,12 @@ class NFStepper : UIControl {
     }
     
     private func changeToFlatStyle() {
-        
+        buttonContainer.layer.cornerRadius = 1.0
+        self.layer.cornerRadius = 1.0
     }
     
     private func changeToRoundedStyle() {
-        
+        buttonContainer.layer.cornerRadius = 10.0
+        self.layer.cornerRadius = 10.0
     }
 }
