@@ -79,8 +79,10 @@ class NFStepper : UIControl {
     
     private var labelContainerView : UIView = UIView(frame: CGRectZero)
     private var valueLabel : UILabel = UILabel(frame: CGRectZero)
+    private var buttonContainer : UIView = UIView(frame: CGRectZero)
     private var increaseButton : UIButton = UIButton(frame: CGRectZero)
     private var decreaseButton : UIButton = UIButton(frame: CGRectZero)
+    private var buttonSeparator : UIView = UIView(frame: CGRectZero)
     
     private let blueHighlight : UIColor = UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)
     
@@ -157,42 +159,69 @@ class NFStepper : UIControl {
     // MARK: Button Methods
     
     private func setupAndAddButtons() {
+        self.setupButtonContainer()
         self.setupIncreaseButton()
-        self.addSubview(increaseButton)
+        self.setupButtonSeparator()
         self.setupDecreaseButton()
-        self.addSubview(decreaseButton)
+        self.setupIncreaseButton()
+        self.setupDecreaseButton()
         self.setupButtonConstraints()
+    }
+    
+    private func setupButtonContainer() {
+        buttonContainer.setTranslatesAutoresizingMaskIntoConstraints(false)
+        buttonContainer.clipsToBounds = true
+        buttonContainer.layer.borderWidth = 1.0
+        buttonContainer.layer.borderColor = blueHighlight.CGColor
+        self.addSubview(buttonContainer)
+        self.setupButtonContainerConstraints()
+    }
+    
+    private func setupButtonContainerConstraints() {
+        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[buttonContainer(<=90)]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView, "buttonContainer" : buttonContainer])
+        
+        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[buttonContainer]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["buttonContainer" : buttonContainer])
+        
+        self.addConstraints(horizontal)
+        self.addConstraints(vertical)
+    }
+    
+    private func setupButtonSeparator() {
+        buttonSeparator.setTranslatesAutoresizingMaskIntoConstraints(false)
+        buttonSeparator.backgroundColor = blueHighlight
+        buttonContainer.addSubview(buttonSeparator)
     }
     
     private func setupIncreaseButton() {
         increaseButton.setTitle("+", forState: UIControlState.Normal)
         increaseButton.backgroundColor = UIColor.whiteColor()
         increaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
-        increaseButton.layer.borderWidth = 1.0
-        increaseButton.layer.borderColor = blueHighlight.CGColor
         increaseButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         increaseButton.addTarget(self, action: "increaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
+        buttonContainer.addSubview(increaseButton)
     }
     
     private func setupDecreaseButton() {
         decreaseButton.setTitle("-", forState: UIControlState.Normal)
         decreaseButton.backgroundColor = UIColor.whiteColor()
         decreaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
-        decreaseButton.layer.borderWidth = 1.0
-        decreaseButton.layer.borderColor = blueHighlight.CGColor
         decreaseButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         decreaseButton.addTarget(self, action: "decreaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
+        buttonContainer.addSubview(decreaseButton)
     }
     
     private func setupButtonConstraints() {
-        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[decreaseButton][increaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView, "increaseButton" : increaseButton, "decreaseButton" : decreaseButton])
+        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[decreaseButton][buttonSeparator(1)][increaseButton]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["increaseButton" : increaseButton, "buttonSeparator" : buttonSeparator, "decreaseButton" : decreaseButton])
         
-        var verticalIncrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[increaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["increaseButton" : increaseButton])
+        var verticalIncrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|[increaseButton]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["increaseButton" : increaseButton])
         
-        var verticalDecrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[decreaseButton]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["decreaseButton" : decreaseButton])
+        var verticalSeparator = NSLayoutConstraint.constraintsWithVisualFormat("V:|[buttonSeparator]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["buttonSeparator" : buttonSeparator])
+        
+        var verticalDecrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|[decreaseButton]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["decreaseButton" : decreaseButton])
         
         self.addConstraints(horizontal)
         self.addConstraints(verticalIncrease)
+        self.addConstraints(verticalSeparator)
         self.addConstraints(verticalDecrease)
     }
     
