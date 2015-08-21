@@ -84,6 +84,9 @@ class NFStepper : UIControl {
     private var decreaseButton : UIButton = UIButton(frame: CGRectZero)
     private var buttonSeparator : UIView = UIView(frame: CGRectZero)
     
+    // MARK: -
+    // MARK: Colors
+    
     private let blueHighlight : UIColor = UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)
     private let darkTextColor : UIColor = UIColor(red: 0.835, green: 0.835, blue: 0.835, alpha: 1.0)
     private let darkThemeColor : UIColor = UIColor(red: 0.157, green: 0.157, blue: 0.157, alpha: 1.0)
@@ -273,12 +276,27 @@ class NFStepper : UIControl {
     private func verticalAnimation(oldValue : Double, newValue : Double) {
         var isIncreased : Bool = self.isValueIncreased(oldValue, newValue: newValue)
         
-        isIncreased ? (self.valueLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame))
+        var tempLabel : UILabel = self.tempLabelFromLabel(valueLabel)
+        self.labelContainerView.addSubview(tempLabel)
         
+        isIncreased ? (self.valueLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame))
         
         UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
             isIncreased ? (self.valueLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame))
-            }, completion: nil)
+            isIncreased ? (tempLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame)) : (tempLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame))
+            }, completion: {(Bool) in
+                tempLabel.removeFromSuperview()
+        })
+    }
+    
+    private func tempLabelFromLabel(label : UILabel) -> UILabel {
+        var retVal : UILabel = UILabel(frame: label.frame)
+        retVal.center = valueLabel.center
+        retVal.textColor = valueLabel.textColor
+        retVal.text = valueLabel.text
+        retVal.font = valueLabel.font
+        
+        return retVal
     }
     
     // MARK: -
