@@ -12,7 +12,6 @@ import UIKit
 enum ValueChangeAnimationStyle {
     case None
     case FadeInOut
-    case Horizontal
     case Vertical
 }
 
@@ -21,15 +20,10 @@ enum StepperStyle {
     case Rounded
 }
 
-enum StepperTheme {
-    case Light
-    case Dark
-}
-
 class NFStepper : UIControl {
     
     // MARK: -
-    // MARK: Properties
+    // MARK: Public Properties
     
     private(set) var value : Double = 1.0 {
         didSet {
@@ -51,7 +45,13 @@ class NFStepper : UIControl {
     var maxValue : Double = 10.0
     var minValue : Double = 0.0
     var stepSize : Double = 1.0
-    var animationStyle : ValueChangeAnimationStyle = ValueChangeAnimationStyle.Vertical
+    var animation : ValueChangeAnimationStyle = ValueChangeAnimationStyle.Vertical
+    
+    var style : StepperStyle = StepperStyle.Flat {
+        didSet {
+            self.changeStyle()
+        }
+    }
     
     var valueTextColor : UIColor = UIColor.darkTextColor() {
         didSet {
@@ -65,17 +65,46 @@ class NFStepper : UIControl {
         }
     }
     
-    var theme : StepperTheme = StepperTheme.Light {
+    override var backgroundColor : UIColor? {
         didSet {
-            self.changeTheme()
+            valueLabel.backgroundColor = self.backgroundColor
         }
     }
     
-    var style : StepperStyle = StepperStyle.Flat {
+    var increaseButtonBackgroundColor : UIColor = UIColor() {
         didSet {
-            self.changeStyle()
+            increaseButton.backgroundColor = increaseButtonBackgroundColor
         }
     }
+    
+    var decreaseButtonBackgroundColor : UIColor = UIColor() {
+        didSet {
+            decreaseButton.backgroundColor = decreaseButtonBackgroundColor
+        }
+    }
+    
+    var borderColor : UIColor = UIColor() {
+        didSet {
+            self.layer.borderColor = borderColor.CGColor
+            buttonContainer.layer.borderColor = borderColor.CGColor
+            buttonSeparator.backgroundColor = borderColor
+        }
+    }
+    
+    var increaseButtonTitleColor : UIColor = UIColor() {
+        didSet {
+            increaseButton.setTitleColor(increaseButtonTitleColor, forState: UIControlState.Normal)
+        }
+    }
+    
+    var decreaseButtonTitleColor : UIColor = UIColor() {
+        didSet {
+            decreaseButton.setTitleColor(decreaseButtonTitleColor, forState: UIControlState.Normal)
+        }
+    }
+    
+    // MARK: -
+    // MARK: Private Properties
     
     private var labelContainerView : UIView = UIView(frame: CGRectZero)
     private var valueLabel : UILabel = UILabel(frame: CGRectZero)
@@ -83,13 +112,7 @@ class NFStepper : UIControl {
     private var increaseButton : UIButton = UIButton(frame: CGRectZero)
     private var decreaseButton : UIButton = UIButton(frame: CGRectZero)
     private var buttonSeparator : UIView = UIView(frame: CGRectZero)
-    
-    // MARK: -
-    // MARK: Colors
-    
     private let blueHighlight : UIColor = UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)
-    private let darkTextColor : UIColor = UIColor(red: 0.835, green: 0.835, blue: 0.835, alpha: 1.0)
-    private let darkThemeColor : UIColor = UIColor(red: 0.157, green: 0.157, blue: 0.157, alpha: 1.0)
     
     // MARK: -
     // MARK: Initializers
@@ -114,6 +137,7 @@ class NFStepper : UIControl {
         self.setupAndAddValueLabel()
         self.setupAndAddButtons()
     }
+    
     
     // MARK: -
     // MARK: Value Label Methods
@@ -244,11 +268,9 @@ class NFStepper : UIControl {
     // MARK: Animation
     
     private func animateValueChange(oldValue : Double, newValue : Double) {
-        switch animationStyle {
+        switch animation {
         case .FadeInOut:
             self.fadeInOutAnimation()
-        case .Horizontal:
-            self.horizontalAnimation(oldValue, newValue: newValue)
         case  .Vertical:
             self.verticalAnimation(oldValue, newValue: newValue)
         default:
@@ -260,16 +282,6 @@ class NFStepper : UIControl {
         self.valueLabel.alpha = 0.0
         UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
             self.valueLabel.alpha = 1.0
-            }, completion: nil)
-    }
-    
-    private func horizontalAnimation(oldValue : Double, newValue : Double) {
-        var isIncreased : Bool = self.isValueIncreased(oldValue, newValue: newValue)
-        
-        isIncreased ? (self.valueLabel.frame.origin.x += CGRectGetWidth(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.x -= CGRectGetWidth(self.labelContainerView.frame))
-        
-        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-            isIncreased ? (self.valueLabel.frame.origin.x -= CGRectGetWidth(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.x += CGRectGetWidth(self.labelContainerView.frame))
             }, completion: nil)
     }
     
@@ -304,34 +316,6 @@ class NFStepper : UIControl {
     
     private func isValueIncreased(oldValue : Double, newValue : Double) -> Bool {
         return (newValue > oldValue) ? true : false
-    }
-    
-    // MARK: -
-    // MARK: Themes
-    
-    private func changeTheme() {
-        switch theme {
-        case .Dark:
-            self.changeToDarkTheme()
-        case .Light:
-            self.changeToLightTheme()
-        }
-    }
-    
-    private func changeToDarkTheme() {
-        self.backgroundColor = darkThemeColor
-        valueLabel.textColor = darkTextColor
-        valueLabel.backgroundColor = darkThemeColor
-        increaseButton.backgroundColor = darkThemeColor
-        decreaseButton.backgroundColor = darkThemeColor
-    }
-    
-    private func changeToLightTheme() {
-        self.backgroundColor = UIColor.whiteColor()
-        valueLabel.textColor = UIColor.darkTextColor()
-        valueLabel.backgroundColor = UIColor.whiteColor()
-        increaseButton.backgroundColor = UIColor.whiteColor()
-        decreaseButton.backgroundColor = UIColor.whiteColor()
     }
     
     // MARK: -

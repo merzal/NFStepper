@@ -13,8 +13,7 @@ class ViewController: UIViewController {
     var titleLabel : UILabel = UILabel(frame: CGRectZero)
     var stepper : NFStepper = NFStepper(frame: CGRectZero)
     var styleSegment : UISegmentedControl = UISegmentedControl(items: ["Flat", "Round"])
-    var themeSegment : UISegmentedControl = UISegmentedControl(items: ["Light", "Dark"])
-    var animationSegment : UISegmentedControl = UISegmentedControl(items: ["None", "Vertical", "Horizontal", "FadeInOut"])
+    var animationSegment : UISegmentedControl = UISegmentedControl(items: ["None", "Vertical", "FadeInOut"])
     
     // MARK: -
     // MARK: View Lifecycle Methods
@@ -59,7 +58,7 @@ class ViewController: UIViewController {
     
     func setupAndAddNFStepper() {
         stepper.setTranslatesAutoresizingMaskIntoConstraints(false)
-        stepper.animationStyle = ValueChangeAnimationStyle.None
+        stepper.animation = ValueChangeAnimationStyle.None
         self.view.addSubview(stepper)
         self.setupStepperConstraints()
     }
@@ -100,17 +99,6 @@ class ViewController: UIViewController {
         styleSegment.addTarget(self, action: "selectionIndexChanged:", forControlEvents: UIControlEvents.ValueChanged)
         self.view.addSubview(styleSegment)
         
-        var themeLabel : UILabel = UILabel(frame: CGRectZero)
-        themeLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
-        themeLabel.textAlignment = NSTextAlignment.Center
-        themeLabel.text = "Theme"
-        self.view.addSubview(themeLabel)
-        
-        themeSegment.setTranslatesAutoresizingMaskIntoConstraints(false)
-        themeSegment.selectedSegmentIndex = 0
-        themeSegment.addTarget(self, action: "selectionIndexChanged:", forControlEvents: UIControlEvents.ValueChanged)
-        self.view.addSubview(themeSegment)
-        
         var horizontalAL = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[animationLabel]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["animationLabel" : animationLabel])
         
         var horizontalAS = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[animationSegment]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["animationSegment" : animationSegment])
@@ -119,18 +107,12 @@ class ViewController: UIViewController {
         
         var horizontalSS = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[styleLabel]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["styleLabel" : styleLabel])
         
-        var horizontalTL = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[themeLabel]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["themeLabel" : themeLabel])
-        
-        var horizontalTS = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[themeSegment]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["themeSegment" : themeSegment])
-        
-        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:[stepper]-50-[animationLabel]-[animationSegment]-[styleLabel]-[styleSegment]-[themeLabel]-[themeSegment]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["animationLabel" : animationLabel, "stepper" : stepper, "animationSegment" : animationSegment, "styleLabel" : styleLabel, "styleSegment" : styleSegment, "themeLabel" : themeLabel, "themeSegment" : themeSegment])
+        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:[stepper]-50-[animationLabel]-[animationSegment]-[styleLabel]-[styleSegment]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["animationLabel" : animationLabel, "stepper" : stepper, "animationSegment" : animationSegment, "styleLabel" : styleLabel, "styleSegment" : styleSegment])
         
         self.view.addConstraints(horizontalAL)
         self.view.addConstraints(horizontalAS)
         self.view.addConstraints(horizontalSL)
         self.view.addConstraints(horizontalSS)
-        self.view.addConstraints(horizontalTL)
-        self.view.addConstraints(horizontalTS)
 
         self.view.addConstraints(vertical)
     }
@@ -139,13 +121,11 @@ class ViewController: UIViewController {
         if(sender.isEqual(animationSegment)) {
             switch sender.selectedSegmentIndex {
             case 0:
-                stepper.animationStyle = ValueChangeAnimationStyle.None
+                stepper.animation = ValueChangeAnimationStyle.None
             case 1:
-                stepper.animationStyle = ValueChangeAnimationStyle.Vertical
+                stepper.animation = ValueChangeAnimationStyle.Vertical
             case 2:
-                stepper.animationStyle = ValueChangeAnimationStyle.Horizontal
-            case 3:
-                stepper.animationStyle = ValueChangeAnimationStyle.FadeInOut
+                stepper.animation = ValueChangeAnimationStyle.FadeInOut
             default:
                 break
             }
@@ -156,16 +136,6 @@ class ViewController: UIViewController {
                 stepper.style = StepperStyle.Flat
             case 1:
                 stepper.style = StepperStyle.Rounded
-            default:
-                break
-            }
-        }
-        else if(sender.isEqual(themeSegment)) {
-            switch sender.selectedSegmentIndex {
-            case 0:
-                stepper.theme = StepperTheme.Light
-            case 1:
-                stepper.theme = StepperTheme.Dark
             default:
                 break
             }
