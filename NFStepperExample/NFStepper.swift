@@ -183,9 +183,9 @@ class NFStepper : UIControl {
     }
     
     private func setupButtonContainerConstraints() {
-        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[buttonContainer(<=90)]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView, "buttonContainer" : buttonContainer])
+        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[buttonContainer(<=90)]-5-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView, "buttonContainer" : buttonContainer])
         
-        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[buttonContainer]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["buttonContainer" : buttonContainer])
+        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[buttonContainer]-5-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["buttonContainer" : buttonContainer])
         
         self.addConstraints(horizontal)
         self.addConstraints(vertical)
