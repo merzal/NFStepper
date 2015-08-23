@@ -27,6 +27,9 @@ class NFStepper : UIControl {
     
     private(set) var value : Double = 1.0 {
         didSet {
+            
+            sendActionsForControlEvents(UIControlEvents.ValueChanged)
+            
             if(value > maxValue) {
                 value = maxValue
             }
@@ -44,7 +47,7 @@ class NFStepper : UIControl {
     
     var maxValue : Double = 10.0
     var minValue : Double = 0.0
-    var stepSize : Double = 1.0
+    var stepValue : Double = 1.0
     var animation : ValueChangeAnimationStyle = ValueChangeAnimationStyle.Vertical
     
     var style : StepperStyle = StepperStyle.Flat {
@@ -257,11 +260,11 @@ class NFStepper : UIControl {
     }
     
     @objc private func increaseValue(sender : UIButton) {
-        value += stepSize
+        value += stepValue
     }
     
     @objc private func decreaseValue(sender : UIButton) {
-        value -= stepSize
+        value -= stepValue
     }
     
     // MARK: -
