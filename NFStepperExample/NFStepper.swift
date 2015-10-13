@@ -125,7 +125,7 @@ class NFStepper : UIControl {
         self.setupStepper()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setupStepper()
     }
@@ -151,16 +151,16 @@ class NFStepper : UIControl {
     }
     
     private func setupLabelContainerView() {
-        labelContainerView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        labelContainerView.translatesAutoresizingMaskIntoConstraints = false
         labelContainerView.clipsToBounds = true
         self.addSubview(labelContainerView)
         self.setupLabelContainerViewConstraints()
     }
     
     private func setupLabelContainerViewConstraints() {
-        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[labelContainerView]", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView])
+        let horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[labelContainerView]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["labelContainerView" : labelContainerView])
         
-        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[labelContainerView]-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView])
+        let vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[labelContainerView]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["labelContainerView" : labelContainerView])
         
         self.addConstraints(horizontal)
         self.addConstraints(vertical)
@@ -172,7 +172,7 @@ class NFStepper : UIControl {
         valueLabel.text = String(format: "%g", value)
         valueLabel.textColor = UIColor.darkTextColor()
         valueLabel.font = UIFont.boldSystemFontOfSize(20.0)
-        valueLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        valueLabel.translatesAutoresizingMaskIntoConstraints = false
         
         self.labelContainerView.addSubview(valueLabel)
         
@@ -180,9 +180,9 @@ class NFStepper : UIControl {
     }
     
     private func setupValueLabelConstraints() {
-        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[valueLabel]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["valueLabel" : valueLabel])
+        let horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[valueLabel]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["valueLabel" : valueLabel])
         
-        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|[valueLabel]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["valueLabel" : valueLabel])
+        let vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|[valueLabel]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["valueLabel" : valueLabel])
         
         self.addConstraints(horizontal)
         self.addConstraints(vertical)
@@ -200,7 +200,7 @@ class NFStepper : UIControl {
     }
     
     private func setupButtonContainer() {
-        buttonContainer.setTranslatesAutoresizingMaskIntoConstraints(false)
+        buttonContainer.translatesAutoresizingMaskIntoConstraints = false
         buttonContainer.clipsToBounds = true
         buttonContainer.layer.cornerRadius = 1.0
         buttonContainer.layer.borderWidth = 1.0
@@ -210,16 +210,16 @@ class NFStepper : UIControl {
     }
     
     private func setupButtonContainerConstraints() {
-        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[buttonContainer(<=90)]-5-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["labelContainerView" : labelContainerView, "buttonContainer" : buttonContainer])
+        let horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[buttonContainer(<=90)]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["labelContainerView" : labelContainerView, "buttonContainer" : buttonContainer])
         
-        var vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[buttonContainer]-5-|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["buttonContainer" : buttonContainer])
+        let vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[buttonContainer]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["buttonContainer" : buttonContainer])
         
         self.addConstraints(horizontal)
         self.addConstraints(vertical)
     }
     
     private func setupButtonSeparator() {
-        buttonSeparator.setTranslatesAutoresizingMaskIntoConstraints(false)
+        buttonSeparator.translatesAutoresizingMaskIntoConstraints = false
         buttonSeparator.backgroundColor = blueHighlight
         buttonContainer.addSubview(buttonSeparator)
     }
@@ -229,7 +229,7 @@ class NFStepper : UIControl {
         increaseButton.backgroundColor = UIColor.whiteColor()
         increaseButton.titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
         increaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
-        increaseButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        increaseButton.translatesAutoresizingMaskIntoConstraints = false
         increaseButton.addTarget(self, action: "increaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
         buttonContainer.addSubview(increaseButton)
     }
@@ -239,19 +239,19 @@ class NFStepper : UIControl {
         decreaseButton.backgroundColor = UIColor.whiteColor()
         decreaseButton.titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
         decreaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
-        decreaseButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        decreaseButton.translatesAutoresizingMaskIntoConstraints = false
         decreaseButton.addTarget(self, action: "decreaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
         buttonContainer.addSubview(decreaseButton)
     }
     
     private func setupButtonConstraints() {
-        var horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[decreaseButton][buttonSeparator(1)][increaseButton]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["increaseButton" : increaseButton, "buttonSeparator" : buttonSeparator, "decreaseButton" : decreaseButton])
+        let horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[decreaseButton][buttonSeparator(1)][increaseButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["increaseButton" : increaseButton, "buttonSeparator" : buttonSeparator, "decreaseButton" : decreaseButton])
         
-        var verticalIncrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|[increaseButton]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["increaseButton" : increaseButton])
+        let verticalIncrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|[increaseButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["increaseButton" : increaseButton])
         
-        var verticalSeparator = NSLayoutConstraint.constraintsWithVisualFormat("V:|[buttonSeparator]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["buttonSeparator" : buttonSeparator])
+        let verticalSeparator = NSLayoutConstraint.constraintsWithVisualFormat("V:|[buttonSeparator]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["buttonSeparator" : buttonSeparator])
         
-        var verticalDecrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|[decreaseButton]|", options: NSLayoutFormatOptions(0), metrics: nil, views: ["decreaseButton" : decreaseButton])
+        let verticalDecrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|[decreaseButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["decreaseButton" : decreaseButton])
         
         self.addConstraints(horizontal)
         self.addConstraints(verticalIncrease)
@@ -289,9 +289,9 @@ class NFStepper : UIControl {
     }
     
     private func verticalAnimation(oldValue : Double, newValue : Double) {
-        var isIncreased : Bool = self.isValueIncreased(oldValue, newValue: newValue)
+        let isIncreased : Bool = self.isValueIncreased(oldValue, newValue: newValue)
         
-        var tempLabel : UILabel = self.tempLabelFromLabel(valueLabel)
+        let tempLabel : UILabel = self.tempLabelFromLabel(valueLabel)
         self.labelContainerView.addSubview(tempLabel)
         
         isIncreased ? (self.valueLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame))
@@ -305,7 +305,7 @@ class NFStepper : UIControl {
     }
     
     private func tempLabelFromLabel(label : UILabel) -> UILabel {
-        var retVal : UILabel = UILabel(frame: label.frame)
+        let retVal : UILabel = UILabel(frame: label.frame)
         retVal.center = valueLabel.center
         retVal.textColor = valueLabel.textColor
         retVal.text = valueLabel.text
