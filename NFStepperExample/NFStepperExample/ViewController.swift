@@ -85,7 +85,7 @@ class ViewController: UIViewController {
         
         animationSegment.translatesAutoresizingMaskIntoConstraints = false
         animationSegment.selectedSegmentIndex = 0
-        animationSegment.addTarget(self, action: "selectionIndexChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        animationSegment.addTarget(self, action: #selector(ViewController.selectionIndexChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         self.view.addSubview(animationSegment)
         
         let styleLabel : UILabel = UILabel(frame: CGRectZero)
@@ -96,7 +96,7 @@ class ViewController: UIViewController {
         
         styleSegment.translatesAutoresizingMaskIntoConstraints = false
         styleSegment.selectedSegmentIndex = 0
-        styleSegment.addTarget(self, action: "selectionIndexChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        styleSegment.addTarget(self, action: #selector(ViewController.selectionIndexChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
         self.view.addSubview(styleSegment)
         
         let horizontalAL = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[animationLabel]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["animationLabel" : animationLabel])
