@@ -230,7 +230,7 @@ class NFStepper : UIControl {
         increaseButton.titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
         increaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
         increaseButton.translatesAutoresizingMaskIntoConstraints = false
-        increaseButton.addTarget(self, action: "increaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
+        increaseButton.addTarget(self, action: #selector(NFStepper.increaseValue(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         buttonContainer.addSubview(increaseButton)
     }
     
@@ -240,7 +240,7 @@ class NFStepper : UIControl {
         decreaseButton.titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
         decreaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
         decreaseButton.translatesAutoresizingMaskIntoConstraints = false
-        decreaseButton.addTarget(self, action: "decreaseValue:", forControlEvents: UIControlEvents.TouchUpInside)
+        decreaseButton.addTarget(self, action: #selector(NFStepper.decreaseValue(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         buttonContainer.addSubview(decreaseButton)
     }
     
