@@ -10,8 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var titleLabel : UILabel = UILabel(frame: CGRectZero)
-    var stepper : NFStepper = NFStepper(frame: CGRectZero)
+    var titleLabel : UILabel = UILabel(frame: CGRect.zero)
+    var stepper : NFStepper = NFStepper(frame: CGRect.zero)
     var styleSegment : UISegmentedControl = UISegmentedControl(items: ["Flat", "Round"])
     var animationSegment : UISegmentedControl = UISegmentedControl(items: ["None", "Vertical", "FadeInOut"])
     
@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.white
         
         self.setupAndAddTitleLabel()
         self.setupAndAddNFStepper()
@@ -38,16 +38,16 @@ class ViewController: UIViewController {
     
     func setupTitleLabel() {
         titleLabel.text = "NFStepper example"
-        titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.textColor = UIColor.darkGrayColor()
-        titleLabel.font = UIFont.boldSystemFontOfSize(20.0)
+        titleLabel.textAlignment = NSTextAlignment.center
+        titleLabel.textColor = UIColor.darkGray
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func setupTitleLabelConstraints() {
-        let horizontalTitleLabelConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[titleLabel]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["titleLabel" : titleLabel])
+        let horizontalTitleLabelConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[titleLabel]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["titleLabel" : titleLabel])
         
-        let verticalTitleLabelConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[titleLabel(40)]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["titleLabel" : titleLabel])
+        let verticalTitleLabelConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[titleLabel(40)]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["titleLabel" : titleLabel])
         
         self.view.addConstraints(horizontalTitleLabelConstraints)
         self.view.addConstraints(verticalTitleLabelConstraints)
@@ -58,15 +58,15 @@ class ViewController: UIViewController {
     
     func setupAndAddNFStepper() {
         stepper.translatesAutoresizingMaskIntoConstraints = false
-        stepper.animation = ValueChangeAnimationStyle.None
+        stepper.animation = ValueChangeAnimationStyle.none
         self.view.addSubview(stepper)
         self.setupStepperConstraints()
     }
     
     func setupStepperConstraints() {
-        let horizontalStepperConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[stepper]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["stepper" : stepper])
+        let horizontalStepperConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[stepper]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["stepper" : stepper])
         
-        let verticalStepperConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:[titleLabel]-[stepper(60)]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["titleLabel" : titleLabel, "stepper" : stepper])
+        let verticalStepperConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[titleLabel]-[stepper(60)]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["titleLabel" : titleLabel, "stepper" : stepper])
         
         self.view.addConstraints(horizontalStepperConstraints)
         self.view.addConstraints(verticalStepperConstraints)
@@ -77,37 +77,37 @@ class ViewController: UIViewController {
     
     func setupSegmentedControls() {
         
-        let animationLabel : UILabel = UILabel(frame: CGRectZero)
+        let animationLabel : UILabel = UILabel(frame: CGRect.zero)
         animationLabel.translatesAutoresizingMaskIntoConstraints = false
-        animationLabel.textAlignment = NSTextAlignment.Center
+        animationLabel.textAlignment = NSTextAlignment.center
         animationLabel.text = "Animation"
         self.view.addSubview(animationLabel)
         
         animationSegment.translatesAutoresizingMaskIntoConstraints = false
         animationSegment.selectedSegmentIndex = 0
-        animationSegment.addTarget(self, action: #selector(ViewController.selectionIndexChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        animationSegment.addTarget(self, action: #selector(ViewController.selectionIndexChanged(_:)), for: UIControlEvents.valueChanged)
         self.view.addSubview(animationSegment)
         
-        let styleLabel : UILabel = UILabel(frame: CGRectZero)
+        let styleLabel : UILabel = UILabel(frame: CGRect.zero)
         styleLabel.translatesAutoresizingMaskIntoConstraints = false
-        styleLabel.textAlignment = NSTextAlignment.Center
+        styleLabel.textAlignment = NSTextAlignment.center
         styleLabel.text = "Style"
         self.view.addSubview(styleLabel)
         
         styleSegment.translatesAutoresizingMaskIntoConstraints = false
         styleSegment.selectedSegmentIndex = 0
-        styleSegment.addTarget(self, action: #selector(ViewController.selectionIndexChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        styleSegment.addTarget(self, action: #selector(ViewController.selectionIndexChanged(_:)), for: UIControlEvents.valueChanged)
         self.view.addSubview(styleSegment)
         
-        let horizontalAL = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[animationLabel]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["animationLabel" : animationLabel])
+        let horizontalAL = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[animationLabel]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["animationLabel" : animationLabel])
         
-        let horizontalAS = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[animationSegment]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["animationSegment" : animationSegment])
+        let horizontalAS = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[animationSegment]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["animationSegment" : animationSegment])
         
-        let horizontalSL = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[styleSegment]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["styleSegment" : styleSegment])
+        let horizontalSL = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[styleSegment]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["styleSegment" : styleSegment])
         
-        let horizontalSS = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[styleLabel]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["styleLabel" : styleLabel])
+        let horizontalSS = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[styleLabel]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["styleLabel" : styleLabel])
         
-        let vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:[stepper]-50-[animationLabel]-[animationSegment]-[styleLabel]-[styleSegment]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["animationLabel" : animationLabel, "stepper" : stepper, "animationSegment" : animationSegment, "styleLabel" : styleLabel, "styleSegment" : styleSegment])
+        let vertical = NSLayoutConstraint.constraints(withVisualFormat: "V:[stepper]-50-[animationLabel]-[animationSegment]-[styleLabel]-[styleSegment]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["animationLabel" : animationLabel, "stepper" : stepper, "animationSegment" : animationSegment, "styleLabel" : styleLabel, "styleSegment" : styleSegment])
         
         self.view.addConstraints(horizontalAL)
         self.view.addConstraints(horizontalAS)
@@ -117,15 +117,15 @@ class ViewController: UIViewController {
         self.view.addConstraints(vertical)
     }
     
-    func selectionIndexChanged(sender : UISegmentedControl) {
+    func selectionIndexChanged(_ sender : UISegmentedControl) {
         if(sender.isEqual(animationSegment)) {
             switch sender.selectedSegmentIndex {
             case 0:
-                stepper.animation = ValueChangeAnimationStyle.None
+                stepper.animation = ValueChangeAnimationStyle.none
             case 1:
-                stepper.animation = ValueChangeAnimationStyle.Vertical
+                stepper.animation = ValueChangeAnimationStyle.vertical
             case 2:
-                stepper.animation = ValueChangeAnimationStyle.FadeInOut
+                stepper.animation = ValueChangeAnimationStyle.fadeInOut
             default:
                 break
             }
@@ -133,9 +133,9 @@ class ViewController: UIViewController {
         else if(sender.isEqual(styleSegment)) {
             switch sender.selectedSegmentIndex {
             case 0:
-                stepper.style = StepperStyle.Flat
+                stepper.style = StepperStyle.flat
             case 1:
-                stepper.style = StepperStyle.Rounded
+                stepper.style = StepperStyle.rounded
             default:
                 break
             }

@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 
 enum ValueChangeAnimationStyle {
-    case None
-    case FadeInOut
-    case Vertical
+    case none
+    case fadeInOut
+    case vertical
 }
 
 enum StepperStyle {
-    case Flat
-    case Rounded
+    case flat
+    case rounded
 }
 
 class NFStepper : UIControl {
@@ -25,10 +25,10 @@ class NFStepper : UIControl {
     // MARK: -
     // MARK: Public Properties
     
-    private(set) var value : Double = 1.0 {
+    fileprivate(set) var value : Double = 1.0 {
         didSet {
             
-            sendActionsForControlEvents(UIControlEvents.ValueChanged)
+            sendActions(for: UIControlEvents.valueChanged)
             
             if(value > maxValue) {
                 value = maxValue
@@ -48,21 +48,21 @@ class NFStepper : UIControl {
     var maxValue : Double = 10.0
     var minValue : Double = 0.0
     var stepValue : Double = 1.0
-    var animation : ValueChangeAnimationStyle = ValueChangeAnimationStyle.Vertical
+    var animation : ValueChangeAnimationStyle = ValueChangeAnimationStyle.vertical
     
-    var style : StepperStyle = StepperStyle.Flat {
+    var style : StepperStyle = StepperStyle.flat {
         didSet {
             self.changeStyle()
         }
     }
     
-    var valueTextColor : UIColor = UIColor.darkTextColor() {
+    var valueTextColor : UIColor = UIColor.darkText {
         didSet {
             valueLabel.textColor = valueTextColor
         }
     }
     
-    var valueFont : UIFont = UIFont.systemFontOfSize(12.0) {
+    var valueFont : UIFont = UIFont.systemFont(ofSize: 12.0) {
         didSet {
             valueLabel.font = valueFont
         }
@@ -88,34 +88,34 @@ class NFStepper : UIControl {
     
     var borderColor : UIColor = UIColor() {
         didSet {
-            self.layer.borderColor = borderColor.CGColor
-            buttonContainer.layer.borderColor = borderColor.CGColor
+            self.layer.borderColor = borderColor.cgColor
+            buttonContainer.layer.borderColor = borderColor.cgColor
             buttonSeparator.backgroundColor = borderColor
         }
     }
     
     var increaseButtonTitleColor : UIColor = UIColor() {
         didSet {
-            increaseButton.setTitleColor(increaseButtonTitleColor, forState: UIControlState.Normal)
+            increaseButton.setTitleColor(increaseButtonTitleColor, for: UIControlState())
         }
     }
     
     var decreaseButtonTitleColor : UIColor = UIColor() {
         didSet {
-            decreaseButton.setTitleColor(decreaseButtonTitleColor, forState: UIControlState.Normal)
+            decreaseButton.setTitleColor(decreaseButtonTitleColor, for: UIControlState())
         }
     }
     
     // MARK: -
     // MARK: Private Properties
     
-    private var labelContainerView : UIView = UIView(frame: CGRectZero)
-    private var valueLabel : UILabel = UILabel(frame: CGRectZero)
-    private var buttonContainer : UIView = UIView(frame: CGRectZero)
-    private var increaseButton : UIButton = UIButton(frame: CGRectZero)
-    private var decreaseButton : UIButton = UIButton(frame: CGRectZero)
-    private var buttonSeparator : UIView = UIView(frame: CGRectZero)
-    private let blueHighlight : UIColor = UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)
+    fileprivate var labelContainerView : UIView = UIView(frame: CGRect.zero)
+    fileprivate var valueLabel : UILabel = UILabel(frame: CGRect.zero)
+    fileprivate var buttonContainer : UIView = UIView(frame: CGRect.zero)
+    fileprivate var increaseButton : UIButton = UIButton(frame: CGRect.zero)
+    fileprivate var decreaseButton : UIButton = UIButton(frame: CGRect.zero)
+    fileprivate var buttonSeparator : UIView = UIView(frame: CGRect.zero)
+    fileprivate let blueHighlight : UIColor = UIColor(red: 0.0, green: 0.478, blue: 1.0, alpha: 1.0)
     
     // MARK: -
     // MARK: Initializers
@@ -133,8 +133,8 @@ class NFStepper : UIControl {
     // MARK: -
     // MARK: Setup Methods
     
-    private func setupStepper() {
-        self.layer.borderColor = blueHighlight.CGColor
+    fileprivate func setupStepper() {
+        self.layer.borderColor = blueHighlight.cgColor
         self.layer.borderWidth = 1.0
         self.layer.cornerRadius = 1.0
         self.setupAndAddValueLabel()
@@ -145,33 +145,33 @@ class NFStepper : UIControl {
     // MARK: -
     // MARK: Value Label Methods
     
-    private func setupAndAddValueLabel() {
+    fileprivate func setupAndAddValueLabel() {
         self.setupLabelContainerView()
         self.setupValueLabel()
     }
     
-    private func setupLabelContainerView() {
+    fileprivate func setupLabelContainerView() {
         labelContainerView.translatesAutoresizingMaskIntoConstraints = false
         labelContainerView.clipsToBounds = true
         self.addSubview(labelContainerView)
         self.setupLabelContainerViewConstraints()
     }
     
-    private func setupLabelContainerViewConstraints() {
-        let horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[labelContainerView]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["labelContainerView" : labelContainerView])
+    fileprivate func setupLabelContainerViewConstraints() {
+        let horizontal = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[labelContainerView]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["labelContainerView" : labelContainerView])
         
-        let vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-[labelContainerView]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["labelContainerView" : labelContainerView])
+        let vertical = NSLayoutConstraint.constraints(withVisualFormat: "V:|-[labelContainerView]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["labelContainerView" : labelContainerView])
         
         self.addConstraints(horizontal)
         self.addConstraints(vertical)
     }
     
-    private func setupValueLabel() {
-        valueLabel.backgroundColor = UIColor.whiteColor()
-        valueLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
+    fileprivate func setupValueLabel() {
+        valueLabel.backgroundColor = UIColor.white
+        valueLabel.lineBreakMode = NSLineBreakMode.byTruncatingTail
         valueLabel.text = String(format: "%g", value)
-        valueLabel.textColor = UIColor.darkTextColor()
-        valueLabel.font = UIFont.boldSystemFontOfSize(20.0)
+        valueLabel.textColor = UIColor.darkText
+        valueLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
         
         self.labelContainerView.addSubview(valueLabel)
@@ -179,10 +179,10 @@ class NFStepper : UIControl {
         self.setupValueLabelConstraints()
     }
     
-    private func setupValueLabelConstraints() {
-        let horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[valueLabel]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["valueLabel" : valueLabel])
+    fileprivate func setupValueLabelConstraints() {
+        let horizontal = NSLayoutConstraint.constraints(withVisualFormat: "H:|[valueLabel]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["valueLabel" : valueLabel])
         
-        let vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|[valueLabel]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["valueLabel" : valueLabel])
+        let vertical = NSLayoutConstraint.constraints(withVisualFormat: "V:|[valueLabel]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["valueLabel" : valueLabel])
         
         self.addConstraints(horizontal)
         self.addConstraints(vertical)
@@ -191,7 +191,7 @@ class NFStepper : UIControl {
     // MARK: -
     // MARK: Button Methods
     
-    private func setupAndAddButtons() {
+    fileprivate func setupAndAddButtons() {
         self.setupButtonContainer()
         self.setupIncreaseButton()
         self.setupButtonSeparator()
@@ -199,59 +199,59 @@ class NFStepper : UIControl {
         self.setupButtonConstraints()
     }
     
-    private func setupButtonContainer() {
+    fileprivate func setupButtonContainer() {
         buttonContainer.translatesAutoresizingMaskIntoConstraints = false
         buttonContainer.clipsToBounds = true
         buttonContainer.layer.cornerRadius = 1.0
         buttonContainer.layer.borderWidth = 1.0
-        buttonContainer.layer.borderColor = blueHighlight.CGColor
+        buttonContainer.layer.borderColor = blueHighlight.cgColor
         self.addSubview(buttonContainer)
         self.setupButtonContainerConstraints()
     }
     
-    private func setupButtonContainerConstraints() {
-        let horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:[labelContainerView]-[buttonContainer(<=90)]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["labelContainerView" : labelContainerView, "buttonContainer" : buttonContainer])
+    fileprivate func setupButtonContainerConstraints() {
+        let horizontal = NSLayoutConstraint.constraints(withVisualFormat: "H:[labelContainerView]-[buttonContainer(<=90)]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["labelContainerView" : labelContainerView, "buttonContainer" : buttonContainer])
         
-        let vertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[buttonContainer]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["buttonContainer" : buttonContainer])
+        let vertical = NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[buttonContainer]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["buttonContainer" : buttonContainer])
         
         self.addConstraints(horizontal)
         self.addConstraints(vertical)
     }
     
-    private func setupButtonSeparator() {
+    fileprivate func setupButtonSeparator() {
         buttonSeparator.translatesAutoresizingMaskIntoConstraints = false
         buttonSeparator.backgroundColor = blueHighlight
         buttonContainer.addSubview(buttonSeparator)
     }
     
-    private func setupIncreaseButton() {
-        increaseButton.setTitle("+", forState: UIControlState.Normal)
-        increaseButton.backgroundColor = UIColor.whiteColor()
-        increaseButton.titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
-        increaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
+    fileprivate func setupIncreaseButton() {
+        increaseButton.setTitle("+", for: UIControlState())
+        increaseButton.backgroundColor = UIColor.white
+        increaseButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: 17.0)
+        increaseButton.setTitleColor(blueHighlight, for: UIControlState())
         increaseButton.translatesAutoresizingMaskIntoConstraints = false
-        increaseButton.addTarget(self, action: #selector(NFStepper.increaseValue(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        increaseButton.addTarget(self, action: #selector(NFStepper.increaseValue(_:)), for: UIControlEvents.touchUpInside)
         buttonContainer.addSubview(increaseButton)
     }
     
-    private func setupDecreaseButton() {
-        decreaseButton.setTitle("-", forState: UIControlState.Normal)
-        decreaseButton.backgroundColor = UIColor.whiteColor()
-        decreaseButton.titleLabel!.font = UIFont.boldSystemFontOfSize(17.0)
-        decreaseButton.setTitleColor(blueHighlight, forState: UIControlState.Normal)
+    fileprivate func setupDecreaseButton() {
+        decreaseButton.setTitle("-", for: UIControlState())
+        decreaseButton.backgroundColor = UIColor.white
+        decreaseButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: 17.0)
+        decreaseButton.setTitleColor(blueHighlight, for: UIControlState())
         decreaseButton.translatesAutoresizingMaskIntoConstraints = false
-        decreaseButton.addTarget(self, action: #selector(NFStepper.decreaseValue(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        decreaseButton.addTarget(self, action: #selector(NFStepper.decreaseValue(_:)), for: UIControlEvents.touchUpInside)
         buttonContainer.addSubview(decreaseButton)
     }
     
-    private func setupButtonConstraints() {
-        let horizontal = NSLayoutConstraint.constraintsWithVisualFormat("H:|[decreaseButton][buttonSeparator(1)][increaseButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["increaseButton" : increaseButton, "buttonSeparator" : buttonSeparator, "decreaseButton" : decreaseButton])
+    fileprivate func setupButtonConstraints() {
+        let horizontal = NSLayoutConstraint.constraints(withVisualFormat: "H:|[decreaseButton][buttonSeparator(1)][increaseButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["increaseButton" : increaseButton, "buttonSeparator" : buttonSeparator, "decreaseButton" : decreaseButton])
         
-        let verticalIncrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|[increaseButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["increaseButton" : increaseButton])
+        let verticalIncrease = NSLayoutConstraint.constraints(withVisualFormat: "V:|[increaseButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["increaseButton" : increaseButton])
         
-        let verticalSeparator = NSLayoutConstraint.constraintsWithVisualFormat("V:|[buttonSeparator]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["buttonSeparator" : buttonSeparator])
+        let verticalSeparator = NSLayoutConstraint.constraints(withVisualFormat: "V:|[buttonSeparator]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["buttonSeparator" : buttonSeparator])
         
-        let verticalDecrease = NSLayoutConstraint.constraintsWithVisualFormat("V:|[decreaseButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["decreaseButton" : decreaseButton])
+        let verticalDecrease = NSLayoutConstraint.constraints(withVisualFormat: "V:|[decreaseButton]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["decreaseButton" : decreaseButton])
         
         self.addConstraints(horizontal)
         self.addConstraints(verticalIncrease)
@@ -259,52 +259,52 @@ class NFStepper : UIControl {
         self.addConstraints(verticalDecrease)
     }
     
-    @objc private func increaseValue(sender : UIButton) {
+    @objc fileprivate func increaseValue(_ sender : UIButton) {
         value += stepValue
     }
     
-    @objc private func decreaseValue(sender : UIButton) {
+    @objc fileprivate func decreaseValue(_ sender : UIButton) {
         value -= stepValue
     }
     
     // MARK: -
     // MARK: Animation
     
-    private func animateValueChange(oldValue : Double, newValue : Double) {
+    fileprivate func animateValueChange(_ oldValue : Double, newValue : Double) {
         switch animation {
-        case .FadeInOut:
+        case .fadeInOut:
             self.fadeInOutAnimation()
-        case  .Vertical:
+        case  .vertical:
             self.verticalAnimation(oldValue, newValue: newValue)
         default:
             break
         }
     }
     
-    private func fadeInOutAnimation() {
+    fileprivate func fadeInOutAnimation() {
         self.valueLabel.alpha = 0.0
-        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions(), animations: {
             self.valueLabel.alpha = 1.0
             }, completion: nil)
     }
     
-    private func verticalAnimation(oldValue : Double, newValue : Double) {
+    fileprivate func verticalAnimation(_ oldValue : Double, newValue : Double) {
         let isIncreased : Bool = self.isValueIncreased(oldValue, newValue: newValue)
         
         let tempLabel : UILabel = self.tempLabelFromLabel(valueLabel)
         self.labelContainerView.addSubview(tempLabel)
         
-        isIncreased ? (self.valueLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame))
+        isIncreased ? (self.valueLabel.frame.origin.y -= self.labelContainerView.frame.height) : (self.valueLabel.frame.origin.y += self.labelContainerView.frame.height)
         
-        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-            isIncreased ? (self.valueLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame)) : (self.valueLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame))
-            isIncreased ? (tempLabel.frame.origin.y += CGRectGetHeight(self.labelContainerView.frame)) : (tempLabel.frame.origin.y -= CGRectGetHeight(self.labelContainerView.frame))
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions(), animations: {
+            isIncreased ? (self.valueLabel.frame.origin.y += self.labelContainerView.frame.height) : (self.valueLabel.frame.origin.y -= self.labelContainerView.frame.height)
+            isIncreased ? (tempLabel.frame.origin.y += self.labelContainerView.frame.height) : (tempLabel.frame.origin.y -= self.labelContainerView.frame.height)
             }, completion: {(Bool) in
                 tempLabel.removeFromSuperview()
         })
     }
     
-    private func tempLabelFromLabel(label : UILabel) -> UILabel {
+    fileprivate func tempLabelFromLabel(_ label : UILabel) -> UILabel {
         let retVal : UILabel = UILabel(frame: label.frame)
         retVal.center = valueLabel.center
         retVal.textColor = valueLabel.textColor
@@ -317,28 +317,28 @@ class NFStepper : UIControl {
     // MARK: -
     // MARK: Helper methods
     
-    private func isValueIncreased(oldValue : Double, newValue : Double) -> Bool {
+    fileprivate func isValueIncreased(_ oldValue : Double, newValue : Double) -> Bool {
         return (newValue > oldValue) ? true : false
     }
     
     // MARK: -
     // MARK: Styles
     
-    private func changeStyle() {
+    fileprivate func changeStyle() {
         switch style {
-        case .Flat:
+        case .flat:
             self.changeToFlatStyle()
-        case .Rounded:
+        case .rounded:
             self.changeToRoundedStyle()
         }
     }
     
-    private func changeToFlatStyle() {
+    fileprivate func changeToFlatStyle() {
         buttonContainer.layer.cornerRadius = 1.0
         self.layer.cornerRadius = 1.0
     }
     
-    private func changeToRoundedStyle() {
+    fileprivate func changeToRoundedStyle() {
         buttonContainer.layer.cornerRadius = 10.0
         self.layer.cornerRadius = 10.0
     }
