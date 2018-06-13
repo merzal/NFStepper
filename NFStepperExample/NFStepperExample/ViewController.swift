@@ -117,7 +117,7 @@ class ViewController: UIViewController {
         self.view.addConstraints(vertical)
     }
     
-    func selectionIndexChanged(_ sender : UISegmentedControl) {
+    @objc func selectionIndexChanged(_ sender : UISegmentedControl) {
         if(sender.isEqual(animationSegment)) {
             switch sender.selectedSegmentIndex {
             case 0:
